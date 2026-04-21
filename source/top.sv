@@ -1,4 +1,5 @@
-//
+// This is a design to communicate with three TMC5240 stepper motor controllers.
+// There are three devices so there are three SS lines on the SPI interface.
 module top (
     input   logic           clkin100,
     input   logic           rstn,
@@ -7,22 +8,14 @@ module top (
     input   logic           usb_uart_rxd,
     output  logic           usb_uart_txd,
     //
-    inout   logic           max_spi_mosi,
-    inout   logic           max_spi_miso,
-    inout   logic           max_spi_sck,
-    inout   logic[1:0]      max_spi_ss,  // two chip select lines for two devices.
-    input   logic           max_intb,
-    output  logic           max_cnvtb
+    inout   logic           spi_mosi,
+    inout   logic           spi_miso,
+    inout   logic           spi_sck,
+    inout   logic[2:0]      spi_ss
 );
 
     logic clk;
     assign clk = clkin100;
-
-//    logic[31:0] led_count = 0;
-//    always_ff @(posedge clk) begin
-//        led_count <= led_count + 1;
-//        led <= led_count[31-:8];
-//    end
     
     logic[1:0]  spi_io_i;
     logic[1:0]  spi_io_o;
@@ -30,8 +23,8 @@ module top (
     logic       spi_sck_i;
     logic       spi_sck_o;
     logic       spi_sck_t;
-    logic[1:0]  spi_ss_i;
-    logic[1:0]  spi_ss_o;    
+    logic[2:0]  spi_ss_i;
+    logic[2:0]  spi_ss_o;    
     logic       spi_ss_t;
     
     system system_i (
@@ -44,25 +37,26 @@ module top (
         //
         .led_gpio_tri_o     (led),
         //
-        .max_spi_io0_i      (spi_io_i[0]),
-        .max_spi_io0_o      (spi_io_o[0]),
-        .max_spi_io0_t      (spi_io_t[0]),
-        .max_spi_io1_i      (spi_io_i[1]),
-        .max_spi_io1_o      (spi_io_o[1]),
-        .max_spi_io1_t      (spi_io_t[1]),
-        .max_spi_sck_i      (spi_sck_i),
-        .max_spi_sck_o      (spi_sck_o),
-        .max_spi_sck_t      (spi_sck_t),
-        .max_spi_ss_i       (spi_ss_i[1:0]),
-        .max_spi_ss_o       (spi_ss_o[1:0]),
-        .max_spi_ss_t       (spi_ss_t)
+        .spi_io0_i      (spi_io_i[0]),
+        .spi_io0_o      (spi_io_o[0]),
+        .spi_io0_t      (spi_io_t[0]),
+        .spi_io1_i      (spi_io_i[1]),
+        .spi_io1_o      (spi_io_o[1]),
+        .spi_io1_t      (spi_io_t[1]),
+        .spi_sck_i      (spi_sck_i),
+        .spi_sck_o      (spi_sck_o),
+        .spi_sck_t      (spi_sck_t),
+        .spi_ss_i       (spi_ss_i),
+        .spi_ss_o       (spi_ss_o),
+        .spi_ss_t       (spi_ss_t)
     );
     
-    IOBUF spi_io0_iobuf (.I(spi_io_o[0]), .IO(max_spi_mosi),   .O(spi_io_i[0]), .T(spi_io_t[0]));
-    IOBUF spi_io1_iobuf (.I(spi_io_o[1]), .IO(max_spi_miso),   .O(spi_io_i[1]), .T(spi_io_t[1]));
-    IOBUF spi_sck_iobuf (.I(spi_sck_o),   .IO(max_spi_sck),    .O(spi_sck_i),   .T(spi_sck_t));
-    IOBUF spi_ss_iobuf0 (.I(spi_ss_o[0]), .IO(max_spi_ss[0]),  .O(spi_ss_i[0]), .T(spi_ss_t));    
-    IOBUF spi_ss_iobuf1 (.I(spi_ss_o[1]), .IO(max_spi_ss[1]),  .O(spi_ss_i[1]), .T(spi_ss_t));    
+    IOBUF spi_io0_iobuf (.I(spi_io_o[0]), .IO(spi_mosi),   .O(spi_io_i[0]), .T(spi_io_t[0]));
+    IOBUF spi_io1_iobuf (.I(spi_io_o[1]), .IO(spi_miso),   .O(spi_io_i[1]), .T(spi_io_t[1]));
+    IOBUF spi_sck_iobuf (.I(spi_sck_o),   .IO(spi_sck),    .O(spi_sck_i),   .T(spi_sck_t));
+    IOBUF spi_ss_iobuf0 (.I(spi_ss_o[0]), .IO(spi_ss[0]),  .O(spi_ss_i[0]), .T(spi_ss_t));    
+    IOBUF spi_ss_iobuf1 (.I(spi_ss_o[1]), .IO(spi_ss[1]),  .O(spi_ss_i[1]), .T(spi_ss_t));    
+    IOBUF spi_ss_iobuf2 (.I(spi_ss_o[2]), .IO(spi_ss[2]),  .O(spi_ss_i[2]), .T(spi_ss_t));    
     
     // debug
     logic dbg_mosi, dbg_miso, dbg_sck;
