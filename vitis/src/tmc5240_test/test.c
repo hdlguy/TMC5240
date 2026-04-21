@@ -8,6 +8,10 @@
 #include "xspi.h"
 #include "xintc.h"
 
+// these are from the AD driver - https://github.com/analogdevicesinc/TMC-API/blob/master/tmc/ic/TMC5240/README.md
+#include "TMC5240_HW_Abstraction.h"
+#include "TMC5240.h"
+
 int main()
 {
     // get pointers to WDT and GPIO
