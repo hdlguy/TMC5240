@@ -48,10 +48,11 @@ comp = client.create_app_component(
 # add source files as symbolic links
 os.system(f"ln -s ../../../src/{app_name}/test.c workspace/{app_name}/src/test.c")
 os.system(f"ln -s ../../../src/fpga.h workspace/{app_name}/src/fpga.h")
+os.system(f"ln -s ../../../src/tmc5240_spi.h workspace/{app_name}/src/tmc5240_spi.h")
 # TMC5240.c  TMC5240.h  TMC5240_HW_Abstraction.h
-os.system(f"ln -s ../../../src/TMC5240/TMC5240_HW_Abstraction.h workspace/{app_name}/src/TMC5240_HW_Abstraction.h")
-os.system(f"ln -s ../../../src/TMC5240/TMC5240.h                workspace/{app_name}/src/TMC5240.h")
-os.system(f"ln -s ../../../src/TMC5240/TMC5240.c                workspace/{app_name}/src/TMC5240.c")
+#os.system(f"ln -s ../../../src/TMC5240/TMC5240_HW_Abstraction.h workspace/{app_name}/src/TMC5240_HW_Abstraction.h")
+#os.system(f"ln -s ../../../src/TMC5240/TMC5240.h                workspace/{app_name}/src/TMC5240.h")
+#os.system(f"ln -s ../../../src/TMC5240/TMC5240.c                workspace/{app_name}/src/TMC5240.c")
 
 status = comp.clean()
 status = platform.build()
