@@ -29,13 +29,13 @@ module top (
     
     system system_i (
         //
-        .clkin100           (clk),
-        .rstn               (rstn),
-        //    
-        .usb_uart_rxd       (usb_uart_rxd),
-        .usb_uart_txd       (usb_uart_txd),
+        .clkin100       (clk),
+        .rstn           (rstn),
+        //   
+        .usb_uart_rxd   (usb_uart_rxd),
+        .usb_uart_txd   (usb_uart_txd),
         //
-        .led_gpio_tri_o     (led),
+        .led_gpio_tri_o (led),
         //
         .spi_io0_i      (spi_io_i[0]),
         .spi_io0_o      (spi_io_o[0]),
@@ -60,11 +60,11 @@ module top (
     
     // debug
     logic dbg_mosi, dbg_miso, dbg_sck;
-    logic[1:0] dbg_ss;
+    logic[2:0] dbg_ss;
     assign dbg_mosi = spi_io_i[0];
     assign dbg_miso = spi_io_i[1];
     assign dbg_sck  = spi_sck_i;
     assign dbg_ss   = spi_ss_i;
-    spi_ila spi_ila_inst(.clk(clk), .probe0({dbg_mosi, dbg_miso, dbg_sck}), .probe1(dbg_ss)); //3,2
+    spi_ila spi_ila_inst(.clk(clk), .probe0({dbg_mosi, dbg_miso, dbg_sck}), .probe1(dbg_ss)); //3,3
 
 endmodule
