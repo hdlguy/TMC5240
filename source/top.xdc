@@ -31,12 +31,23 @@ set_property PACKAGE_PIN C2 [get_ports rstn]
 
 set_property IOSTANDARD LVCMOS33    [get_ports spi_*]
 set_property SLEW SLOW              [get_ports spi_*]
-set_property PACKAGE_PIN D12        [get_ports spi_mosi]
-set_property PACKAGE_PIN B11        [get_ports spi_miso]
-set_property PACKAGE_PIN A11        [get_ports spi_sck]
-set_property PACKAGE_PIN B18        [get_ports spi_ss[0]]
+set_property PACKAGE_PIN B11        [get_ports spi_mosi]
+set_property PACKAGE_PIN A11        [get_ports spi_miso]
+set_property PACKAGE_PIN D12        [get_ports spi_sck]
+set_property PACKAGE_PIN G13        [get_ports spi_ss[0]]
 set_property PACKAGE_PIN D13        [get_ports spi_ss[1]]
-set_property PACKAGE_PIN G13        [get_ports spi_ss[2]]
+set_property PACKAGE_PIN B18        [get_ports spi_ss[2]]
+
+#set_property IOSTANDARD LVCMOS33    [get_ports spi_*]
+#set_property SLEW SLOW              [get_ports spi_*]
+#set_property PACKAGE_PIN D12        [get_ports spi_mosi]
+#set_property PACKAGE_PIN B11        [get_ports spi_miso]
+#set_property PACKAGE_PIN A11        [get_ports spi_sck]
+#set_property PACKAGE_PIN B18        [get_ports spi_ss[0]]
+#set_property PACKAGE_PIN D13        [get_ports spi_ss[1]]
+#set_property PACKAGE_PIN G13        [get_ports spi_ss[2]]
+
+
 
 ## Pmod Header JA
 #set_property -dict { PACKAGE_PIN G13   IOSTANDARD LVCMOS33 } [get_ports { ja[0] }]; #IO_0_15 Sch=ja[1]
