@@ -33,15 +33,19 @@ int main()
     tmc5240_init(1);
     tmc5240_init(2);
 
+    // dump the regs
+    tmc5240_print_regs(0);
+    tmc5240_print_regs(1);
+    tmc5240_print_regs(2);
 
-    // command the stepper motor to turn until the limit switch is activated, then go in reverse.
+
+    // command the stepper motor to turn
     
 
 
     uint32_t whilecount=0;
     float tempf[3];
     uint16_t tmc_version[3];
-    int32_t tmc_velocity[3];
     while(1) {
 
         xil_printf("\n\r0x%08x:\n\r", whilecount);
@@ -59,7 +63,7 @@ int main()
         xil_printf("\n\r");
         
 
-        // delay for about 1 second
+        // delay for 1 second
         usleep(1000000);
 
         whilecount++;

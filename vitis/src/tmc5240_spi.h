@@ -1,6 +1,5 @@
 
 #include "TMC5240_HW_Abstraction.h"
-// #include "TMC5240.h"
 
 
 #define SPI_BASEADDR		XPAR_XSPI_0_BASEADDR
@@ -131,6 +130,11 @@ void tmc5240_init(uint8_t dev)
 	regnum = TMC5240_GSTAT;
 	wval = 0xffffffff;
 	tmc5240_write(dev, regnum, wval);
+
+	regnum = TMC5240_INP_OUT;
+	wval = 0x00000000;
+	tmc5240_write(dev, regnum, wval);
+	
 	
 	regnum = TMC5240_X_COMPARE_REPEAT;
 	wval = 0x00000008;
@@ -141,22 +145,78 @@ void tmc5240_init(uint8_t dev)
 	tmc5240_write(dev, regnum, wval);
 	
 	regnum = TMC5240_GLOBAL_SCALER;
+	wval = 0x000000a0;
+	tmc5240_write(dev, regnum, wval);
+		
+	regnum = TMC5240_IHOLD_IRUN;
+	wval = 0x04040503;
+	tmc5240_write(dev, regnum, wval);	
+	
+	regnum = TMC5240_TPOWERDOWN;
+	wval = 0x0000000a;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_TPOWERDOWN;
 	wval = 0x00000000;
 	tmc5240_write(dev, regnum, wval);
 	
-	regnum = TMC5240_GCONF;
-	wval = 0x00000000;
+	regnum = TMC5240_VSTART;
+	wval = 0x00000010;
 	tmc5240_write(dev, regnum, wval);
 	
-	regnum = TMC5240_GCONF;
-	wval = 0x00000000;
+	regnum = TMC5240_A1;
+	wval = 0x00000010;
 	tmc5240_write(dev, regnum, wval);
 	
-	regnum = TMC5240_GCONF;
-	wval = 0x00000000;
+	regnum = TMC5240_V1;
+	wval = 0x00000020;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_AMAX;
+	wval = 0x00000020;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_VMAX;
+	wval = 0x00000040;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_DMAX;
+	wval = 0x00000020;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_TVMAX;
+	wval = 0x00000020;
+	tmc5240_write(dev, regnum, wval);	
+	
+	regnum = TMC5240_D1;
+	wval = 0x00000010;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_VSTOP;
+	wval = 0x00000020;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_V2;
+	wval = 0x00000020;
 	tmc5240_write(dev, regnum, wval);
 	
 }
+
+
+
+void tmc5240_print_regs(uint8_t dev)
+{
+	xil_printf("\n\rdev = 0x%02x", dev);
+	uint32_t rval;
+	for (int i=0; i<0x77; i++) {		
+		rval = tmc5240_read(dev, i);
+		rval = tmc5240_read(dev, i); 
+		if (i%4==0) xil_printf("\n\r0x%02x:", i);
+		xil_printf("0x%08x ", rval);
+	}
+	xil_printf("\n\r");
+}
+
 
 // extern void tmc5240_readWriteSPI(uint16_t icID, uint8_t *data, size_t dataLength);
 // extern bool tmc5240_readWriteUART(uint16_t icID, uint8_t *data, size_t writeLength, size_t readLength);
