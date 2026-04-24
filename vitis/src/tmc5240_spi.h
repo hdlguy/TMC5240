@@ -103,10 +103,54 @@ float tmc5240_readTemp(uint8_t dev)
     return(float_temp);
 }
 
+uint16_t tmc5240_readVersion(uint8_t dev)
+{
+    uint32_t rval;
+    rval = tmc5240_read(dev, TMC5240_INP_OUT);  // the first read establishes the register address.
+    rval = tmc5240_read(dev, TMC5240_INP_OUT);  // the second read returns valid data.   
+    return((rval & 0xff070000) >> 16);
+}
+
+int32_t tmc5240_readVelocity(uint8_t dev)
+{
+    uint32_t rval;
+    rval = tmc5240_read(dev, TMC5240_VACTUAL);  // the first read establishes the register address.
+    rval = tmc5240_read(dev, TMC5240_VACTUAL);  // the second read returns valid data.   
+    return ((int32_t)(rval<<8))/256  ;
+}
+
 void tmc5240_init(uint8_t dev)
 {
 	uint32_t wval;
 	uint8_t regnum;
+	
+	regnum = TMC5240_GCONF;
+	wval = 0x00000000;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_GSTAT;
+	wval = 0xffffffff;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_X_COMPARE_REPEAT;
+	wval = 0x00000008;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_DRV_CONF;
+	wval = 0x00000000;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_GLOBAL_SCALER;
+	wval = 0x00000000;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_GCONF;
+	wval = 0x00000000;
+	tmc5240_write(dev, regnum, wval);
+	
+	regnum = TMC5240_GCONF;
+	wval = 0x00000000;
+	tmc5240_write(dev, regnum, wval);
 	
 	regnum = TMC5240_GCONF;
 	wval = 0x00000000;
