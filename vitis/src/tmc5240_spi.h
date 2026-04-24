@@ -120,88 +120,28 @@ int32_t tmc5240_readVelocity(uint8_t dev)
 
 void tmc5240_init(uint8_t dev)
 {
-	uint32_t wval;
-	uint8_t regnum;
-	
-	regnum = TMC5240_GCONF;
-	wval = 0x00000000;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_GSTAT;
-	wval = 0xffffffff;
-	tmc5240_write(dev, regnum, wval);
-
-	regnum = TMC5240_INP_OUT;
-	wval = 0x00000000;
-	tmc5240_write(dev, regnum, wval);
-	
-	
-	regnum = TMC5240_X_COMPARE_REPEAT;
-	wval = 0x00000008;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_DRV_CONF;
-	wval = 0x00000000;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_GLOBAL_SCALER;
-	wval = 0x000000a0;
-	tmc5240_write(dev, regnum, wval);
-		
-	regnum = TMC5240_IHOLD_IRUN;
-	wval = 0x04040503;
-	tmc5240_write(dev, regnum, wval);	
-	
-	regnum = TMC5240_TPOWERDOWN;
-	wval = 0x0000000a;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_TPOWERDOWN;
-	wval = 0x00000000;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_VSTART;
-	wval = 0x00000010;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_A1;
-	wval = 0x00000010;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_V1;
-	wval = 0x00000020;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_AMAX;
-	wval = 0x00000020;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_VMAX;
-	wval = 0x00000040;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_DMAX;
-	wval = 0x00000020;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_TVMAX;
-	wval = 0x00000020;
-	tmc5240_write(dev, regnum, wval);	
-	
-	regnum = TMC5240_D1;
-	wval = 0x00000010;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_VSTOP;
-	wval = 0x00000020;
-	tmc5240_write(dev, regnum, wval);
-	
-	regnum = TMC5240_V2;
-	wval = 0x00000020;
-	tmc5240_write(dev, regnum, wval);
-	
+    tmc5240_write(dev, TMC5240_GCONF,           0x00000000);
+    tmc5240_write(dev, TMC5240_GSTAT,           0xffffffff);
+    tmc5240_write(dev, TMC5240_INP_OUT,         0x00000000);
+    tmc5240_write(dev, TMC5240_X_COMPARE_REPEAT,0x00000008);
+    tmc5240_write(dev, TMC5240_DRV_CONF,        0x00000000);
+    tmc5240_write(dev, TMC5240_GLOBAL_SCALER,   0x000000a0);
+    tmc5240_write(dev, TMC5240_IHOLD_IRUN,      0x04040503);	
+    tmc5240_write(dev, TMC5240_RAMPMODE,        0x00000001);
+    tmc5240_write(dev, TMC5240_TPOWERDOWN,      0x0000000a);	
+    tmc5240_write(dev, TMC5240_VSTART,          0x00001000);
+    tmc5240_write(dev, TMC5240_A1,              0x00000400);
+    tmc5240_write(dev, TMC5240_V1,              0x00001000);
+    tmc5240_write(dev, TMC5240_AMAX,            0x00000400);
+    tmc5240_write(dev, TMC5240_VMAX,            0x00001000);
+    tmc5240_write(dev, TMC5240_DMAX,            0x00000400);
+    tmc5240_write(dev, TMC5240_TVMAX,           0x00001000);	
+    tmc5240_write(dev, TMC5240_D1,              0x00000400);
+    tmc5240_write(dev, TMC5240_VSTOP,           0x00002000);
+    tmc5240_write(dev, TMC5240_V2,              0x00001000);
+    tmc5240_write(dev, TMC5240_A2,              0x00000400);
+    tmc5240_write(dev, TMC5240_D2,              0x00000400);
 }
-
 
 
 void tmc5240_print_regs(uint8_t dev)
