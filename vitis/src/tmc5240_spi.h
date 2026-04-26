@@ -125,8 +125,8 @@ void tmc5240_init(uint8_t dev)
     tmc5240_write(dev, TMC5240_INP_OUT,         0x00000000);
     tmc5240_write(dev, TMC5240_X_COMPARE_REPEAT,0x00000008);
     tmc5240_write(dev, TMC5240_DRV_CONF,        0x00000000);
-    tmc5240_write(dev, TMC5240_GLOBAL_SCALER,   0x000000a0);
-    tmc5240_write(dev, TMC5240_IHOLD_IRUN,      0x04040503);	
+    tmc5240_write(dev, TMC5240_GLOBAL_SCALER,   0x000000a0);	// 7:0 = current scale
+    tmc5240_write(dev, TMC5240_IHOLD_IRUN,      0x04041003);   	// 12:8 = Irun, 4:0 = Ihold
     tmc5240_write(dev, TMC5240_RAMPMODE,        0x00000001);
     tmc5240_write(dev, TMC5240_TPOWERDOWN,      0x0000000a);	
     tmc5240_write(dev, TMC5240_VSTART,          0x00001000);
