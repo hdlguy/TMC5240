@@ -14,12 +14,21 @@
 #include "TMC5240_HW_Abstraction.h"
 
 
+void spin(uint8_t dev)
+{
+    // command stepper motor 0 to turn    
+    tmc5240_write(dev, TMC5240_IHOLD_IRUN,      0x04041f10);   	// 12:8 = Irun, 4:0 = Ihold
+    tmc5240_write(dev, TMC5240_RAMPMODE,        0x00000001);      // 1:0 = ramp mode, 1=pos vmax
+    tmc5240_write(dev, TMC5240_AMAX,            0x00000400);
+    tmc5240_write(dev, TMC5240_VMAX,            0x00101000);  
+}
+
 int main()
 {
     // get pointers to WDT and GPIO
     uint32_t* gpio_ptr = (uint32_t *) XPAR_XGPIO_0_BASEADDR;
 
-    xil_printf("\n\rHello World!\n\r");
+    xil_printf("\n\r*************** Hello World! ***********\n\r");
     
     // enable SPI master mode.
     u32 Control;
@@ -38,9 +47,10 @@ int main()
     tmc5240_print_regs(1);
     tmc5240_print_regs(2);
 
+    spin(0);
+    spin(1);
+    spin(2);
 
-    // command the stepper motor to turn
-    
 
 
     uint32_t whilecount=0;
@@ -49,6 +59,8 @@ int main()
     while(1) {
 
         xil_printf("\n\r0x%08x:\n\r", whilecount);
+
+// tmc5240_print_regs(0);
 
         // increment the LEDs
         gpio_ptr[XGPIO_DATA_OFFSET/4] = 0x00ff & whilecount;    

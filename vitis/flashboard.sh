@@ -2,6 +2,8 @@
 
 ## ./flashboard.sh  command_proc
 
+rm -f *.bit *.bin *.bif
+
 appname=$1
 memfile=../implement/results/top.mmi
 bitfile=../implement/results/top.bit
