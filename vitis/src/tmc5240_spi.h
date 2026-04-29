@@ -1,7 +1,6 @@
 
 #include "TMC5240_HW_Abstraction.h"
 
-
 #define SPI_BASEADDR		XPAR_XSPI_0_BASEADDR
 
 void tmc5240_write(uint8_t dev, uint8_t regnum, uint32_t val){
@@ -19,6 +18,7 @@ void tmc5240_write(uint8_t dev, uint8_t regnum, uint32_t val){
 	XSpi_WriteReg((SPI_BASEADDR), XSP_DTR_OFFSET, wbuf[3]);
 	XSpi_WriteReg((SPI_BASEADDR), XSP_DTR_OFFSET, wbuf[4]);
 		
+	// assert SS line
 	XSpi_WriteReg(SPI_BASEADDR, XSP_SSR_OFFSET, 0xffffffff ^ (0x00000001<<dev));
 	
 	// * Enable the device.
@@ -28,20 +28,24 @@ void tmc5240_write(uint8_t dev, uint8_t regnum, uint32_t val){
 	Control &= ~XSP_CR_TRANS_INHIBIT_MASK;
 	XSpi_WriteReg(SPI_BASEADDR, XSP_CR_OFFSET, Control);
 
+	// wait for the tx fifo to go empty
 	while (!(XSpi_ReadReg(SPI_BASEADDR, XSP_SR_OFFSET) & XSP_SR_TX_EMPTY_MASK));
 
+	// empty the rx fifo
 	int NumBytesRcvd = 0;
 	while ((XSpi_ReadReg(SPI_BASEADDR, XSP_SR_OFFSET) & XSP_SR_RX_EMPTY_MASK) == 0) {
 		XSpi_ReadReg((SPI_BASEADDR), XSP_DRR_OFFSET);
 		NumBytesRcvd++;
 	}
 
+	// deassert SS line
+	XSpi_WriteReg(SPI_BASEADDR, XSP_SSR_OFFSET, 0xffffffff);
+	
 	// disable the device.
 	Control = XSpi_ReadReg(SPI_BASEADDR, XSP_CR_OFFSET);
 	Control &= ~XSP_CR_ENABLE_MASK;
 	Control &= ~XSP_CR_TRANS_INHIBIT_MASK;
-	XSpi_WriteReg(SPI_BASEADDR, XSP_CR_OFFSET, Control);	
-		
+	XSpi_WriteReg(SPI_BASEADDR, XSP_CR_OFFSET, Control);			
 }
 
 uint32_t tmc5240_read(uint8_t dev, uint8_t regnum){
@@ -59,6 +63,7 @@ uint32_t tmc5240_read(uint8_t dev, uint8_t regnum){
 	XSpi_WriteReg((SPI_BASEADDR), XSP_DTR_OFFSET, wbuf[3]);
 	XSpi_WriteReg((SPI_BASEADDR), XSP_DTR_OFFSET, wbuf[4]);
 		
+	// assert the SS line
 	XSpi_WriteReg(SPI_BASEADDR, XSP_SSR_OFFSET, 0xffffffff ^ (0x00000001<<dev));
 	
 	// * Enable the device.
@@ -68,19 +73,23 @@ uint32_t tmc5240_read(uint8_t dev, uint8_t regnum){
 	Control &= ~XSP_CR_TRANS_INHIBIT_MASK;
 	XSpi_WriteReg(SPI_BASEADDR, XSP_CR_OFFSET, Control);
 
+	// wait for tx fifo to go empty
 	while (!(XSpi_ReadReg(SPI_BASEADDR, XSP_SR_OFFSET) & XSP_SR_TX_EMPTY_MASK));
 
+	// empty the rx fifo
 	int NumBytesRcvd = 0;
 	while ((XSpi_ReadReg(SPI_BASEADDR, XSP_SR_OFFSET) & XSP_SR_RX_EMPTY_MASK) == 0) {
 		rbuf[NumBytesRcvd++] = XSpi_ReadReg((SPI_BASEADDR), XSP_DRR_OFFSET);
 	}
-	
+
+	// deassert SS line
+	XSpi_WriteReg(SPI_BASEADDR, XSP_SSR_OFFSET, 0xffffffff);
+		
 	// disable the device.
 	Control = XSpi_ReadReg(SPI_BASEADDR, XSP_CR_OFFSET);
 	Control &= ~XSP_CR_ENABLE_MASK;
 	Control &= ~XSP_CR_TRANS_INHIBIT_MASK;
-	XSpi_WriteReg(SPI_BASEADDR, XSP_CR_OFFSET, Control);	
-		
+	XSpi_WriteReg(SPI_BASEADDR, XSP_CR_OFFSET, Control);			
 	
 	uint32_t retval;
     retval = 0;

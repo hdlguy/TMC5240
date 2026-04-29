@@ -36,7 +36,6 @@ int main()
     Control |= XSP_CR_MASTER_MODE_MASK;
     XSpi_WriteReg(SPI_BASEADDR, XSP_CR_OFFSET, Control);
     
-
     // initialize the TMC5240
     tmc5240_init(0);
     tmc5240_init(1);
@@ -47,11 +46,10 @@ int main()
     tmc5240_print_regs(1);
     tmc5240_print_regs(2);
 
+    // tell the motors to spin
     spin(0);
     spin(1);
     spin(2);
-
-
 
     uint32_t whilecount=0;
     float tempf[3];
@@ -60,21 +58,19 @@ int main()
 
         xil_printf("\n\r0x%08x:\n\r", whilecount);
 
-// tmc5240_print_regs(0);
-
         // increment the LEDs
-        gpio_ptr[XGPIO_DATA_OFFSET/4] = 0x00ff & whilecount;    
+        gpio_ptr[XGPIO_DATA_OFFSET/4] = 0x00ff & whilecount;  
 
         // read device versions
         for (uint8_t dev=0; dev<3; dev++){ tmc_version[dev] = tmc5240_readVersion(dev); }
-        xil_printf("Versions: 0x%04x 0x%04x 0x%04x\n\r", tmc_version[0], tmc_version[1], tmc_version[2]);
         
         // read the temperature registers.
         for (uint8_t dev=0; dev<3; dev++){ tempf[dev] = tmc5240_readTemp(dev); }
+
+        xil_printf("Versions: 0x%04x 0x%04x 0x%04x\n\r", tmc_version[0], tmc_version[1], tmc_version[2]);
         for (uint8_t dev=0; dev<3; dev++){ xil_printf("%d:temp = %d.%03d   ", dev, (int)tempf[dev], (int)(1000.0*(tempf[dev] - (int)(tempf[dev]))) ); }
         xil_printf("\n\r");
         
-
         // delay for 1 second
         usleep(1000000);
 
