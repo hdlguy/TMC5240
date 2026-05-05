@@ -19,7 +19,7 @@ cpu_name = "microblaze_0"
 #cpu_name = "psu_cortexa53_0"
 
 #os.system('rm -rf workspace')
-shutil.rmtree('workspace')
+shutil.rmtree('workspace', ignore_errors=True)
 
 client = vitis.create_client()
 client.set_workspace(path="workspace")
@@ -54,10 +54,10 @@ comp = client.create_app_component(
 #os.system(f"ln -s ../../../src/fpga.h                               workspace/{app_name}/src/fpga.h")
 #os.system(f"ln -s ../../../src/tmc5240_spi.h                        workspace/{app_name}/src/tmc5240_spi.h")
 #os.system(f"ln -s ../../../src/TMC5240/TMC5240_HW_Abstraction.h     workspace/{app_name}/src/TMC5240_HW_Abstraction.h")
-target=Path("src/tmc5240_test/test.c").resolve();        link=Path("workspace/tmc5240_test/src/test.c");                      link.symlink_to(target)            
-target=Path("src/fpga.h").resolve();                     link=Path("workspace/tmc5240_test/src/fpga.h");                      link.symlink_to(target)            
-target=Path("src/tmc5240_spi.h").resolve();              link=Path("workspace/tmc5240_test/src/tmc5240_spi.h");               link.symlink_to(target)            
-target=Path("src/TMC5240_HW_Abstraction.h").resolve();   link=Path("workspace/tmc5240_test/src/TMC5240_HW_Abstraction.h");    link.symlink_to(target)            
+target=Path("src/tmc5240_test/test.c").resolve();        link=Path("workspace/tmc5240_test/src/test.c").resolve();                      link.symlink_to(target)            
+target=Path("src/fpga.h").resolve();                     link=Path("workspace/tmc5240_test/src/fpga.h").resolve();                      link.symlink_to(target)            
+target=Path("src/tmc5240_spi.h").resolve();              link=Path("workspace/tmc5240_test/src/tmc5240_spi.h").resolve();               link.symlink_to(target)            
+target=Path("src/TMC5240_HW_Abstraction.h").resolve();   link=Path("workspace/tmc5240_test/src/TMC5240_HW_Abstraction.h").resolve();    link.symlink_to(target)            
 
 status = comp.clean()
 status = platform.build()
