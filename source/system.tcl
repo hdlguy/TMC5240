@@ -314,6 +314,7 @@ proc create_root_design { parentCell } {
   set axi_quad_spi_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_quad_spi:3.2 axi_quad_spi_0 ]
   set_property -dict [list \
     CONFIG.C_NUM_SS_BITS {3} \
+    CONFIG.C_SCK_RATIO {16} \
     CONFIG.C_USE_STARTUP {0} \
   ] $axi_quad_spi_0
 
