@@ -34,6 +34,8 @@ int main()
     u32 Control;
     Control = XSpi_ReadReg(SPI_BASEADDR, XSP_CR_OFFSET);
     Control |= XSP_CR_MASTER_MODE_MASK;
+    Control |= XSP_CR_CLK_POLARITY_MASK;  // CPOL = 1
+    Control |= XSP_CR_CLK_PHASE_MASK;     // CPHA = 1
     XSpi_WriteReg(SPI_BASEADDR, XSP_CR_OFFSET, Control);
     
     // initialize the TMC5240
