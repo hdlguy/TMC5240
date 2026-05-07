@@ -11,7 +11,7 @@
 #include "tmc5240_spi.h"
 
 // see - https://github.com/analogdevicesinc/TMC-API/blob/master/tmc/ic/TMC5240/README.md
-#include "TMC5240_HW_Abstraction.h"
+// #include "TMC5240_HW_Abstraction.h"
 
 
 void spin(uint8_t dev)

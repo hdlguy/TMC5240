@@ -134,7 +134,7 @@ void tmc5240_init(uint8_t dev)
     // tmc5240_write(dev, TMC5240_INP_OUT,         0x00000000);
     // tmc5240_write(dev, TMC5240_X_COMPARE_REPEAT,0x00000008);
     tmc5240_write(dev, TMC5240_DRV_CONF,        0x00000000);
-    tmc5240_write(dev, TMC5240_GLOBAL_SCALER,   0x000000D0);	// 7:0 = current scale
+    tmc5240_write(dev, TMC5240_GLOBAL_SCALER,   0x000000FF);	// 7:0 = current scale
     tmc5240_write(dev, TMC5240_IHOLD_IRUN,      0x04040000);   	// 12:8 = Irun, 4:0 = Ihold
     // tmc5240_write(dev, TMC5240_RAMPMODE,        0x00000001);	// 1:0 = ramp mode, 1=pos vmax
     // tmc5240_write(dev, TMC5240_TPOWERDOWN,      0x0000000a);	
